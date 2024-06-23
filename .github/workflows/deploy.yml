@@ -9,11 +9,15 @@ on:
       - '*'
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+            node-version: '18.x'
+            registry-url: 'https://registry.npmjs.org'
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -25,24 +29,23 @@ jobs:
         run: |
           cp README.md content
           jupyter lite build --contents content --output-dir dist
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+          cp deploy/netlify.toml dist
+      - name: Download kuzu-wasm
+        run: |
+          npm view @kuzu/kuzu-wasm dist.tarball | xargs curl -o dist/package.tgz
+          tar -xz -C dist -f dist/package.tgz && rm dist/package.tgz
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3.0
         with:
-          path: ./dist
-
-  deploy:
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    permissions:
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          publish-dir: './dist'
+          production-branch: master
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
+          enable-github-deployment: false
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 10
