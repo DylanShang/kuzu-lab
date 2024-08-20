@@ -31,7 +31,6 @@ jobs:
           cp README.md content
           jupyter lite build --contents content --output-dir dist
           cp deploy/netlify.toml dist
-          cp deploy/wheels dist
       - name: Download kuzu-wasm
         run: |
           npm view @kuzu/kuzu-wasm dist.tarball | xargs curl -o dist/package.tgz
