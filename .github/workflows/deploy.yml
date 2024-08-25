@@ -37,7 +37,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: render the REPL
         run: |
-          quarto render examples/Quarto/repl.qmd --output-dir ../../dist/
+          quarto render examples/Quarto/repl-example.qmd --output-dir ../../dist/
       - name: Download kuzu-wasm
         run: |
           npm view @kuzu/kuzu-wasm dist.tarball | xargs curl -o dist/package.tgz
