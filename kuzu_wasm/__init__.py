@@ -1,17 +1,13 @@
 import js
-async def init() -> object:
-    # import pyodide_js
-    #load pyarrow
-    # await pyodide_js.loadPackage("https://storage.googleapis.com/ibis-wasm-wheels/pyarrow-16.0.0.dev2661%2Bg9bddb87fd-cp311-cp311-emscripten_3_1_46_wasm32.whl")
-    js_function = js.Function('obj', '''
-        async function connectKuzu() {
-                const baseUrl = "https://kuzu-lab.netlify.app";
-                const wasmUrl = `${baseUrl}/package/dist/kuzu.js`;
+async def init(wasmUrl="https://kuzu-lab.netlify.app/package/dist/kuzu.js") -> object:
+    js_function = js.Function('obj', f'''
+        async function connectKuzu() {{
+                const wasmUrl = `{wasmUrl}`;
                 const kuzu_wasm = await import(wasmUrl)
                 const kuzu = await kuzu_wasm.default();
                 kuzu.FS.mkdir("data")
                 return kuzu;
-            }
+            }}
         return connectKuzu()
     ''')
     js_obj = js.Object()

@@ -31,6 +31,13 @@ jobs:
           cp README.md content
           jupyter lite build --contents content --output-dir dist
           cp deploy/netlify.toml dist
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: render the REPL
+        run: |
+          quarto render examples/Quarto/repl.qmd --output-dir ../../dist/
       - name: Download kuzu-wasm
         run: |
           npm view @kuzu/kuzu-wasm dist.tarball | xargs curl -o dist/package.tgz
