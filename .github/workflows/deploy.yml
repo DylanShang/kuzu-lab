@@ -35,10 +35,6 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: add quarto-live for Quarto
-        run: |
-          quarto add r-wasm/quarto-live
-        working-directory: ./examples/Quarto
       - name: render the REPL
         run: |
           quarto render examples/Quarto/repl-example.qmd --output-dir ../../dist
