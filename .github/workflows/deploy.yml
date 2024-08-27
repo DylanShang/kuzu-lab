@@ -43,6 +43,9 @@ jobs:
         run: |
           npm view @kuzu/kuzu-wasm dist.tarball | xargs curl -o dist/package.tgz
           tar -xz -C dist -f dist/package.tgz && rm dist/package.tgz
+      - name: get wheels for public
+        run: |
+          cp -R deploy/wheels dist
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0
         with:

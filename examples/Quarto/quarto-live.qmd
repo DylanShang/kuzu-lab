@@ -7,7 +7,7 @@ pyodide:
     - networkx
     - pyvis
     - pyodide_unix_timezones
-    - https://kuzu-lab.netlify.app/deploy/wheels/pyarrow-17.0.0-cp312-cp312-pyodide_2024_0_wasm32.whl
+    - https://kuzu-lab.netlify.app/wheels/pyarrow-17.0.0-cp312-cp312-pyodide_2024_0_wasm32.whl
     - kuzu_wasm==0.0.7
 ---
 
