@@ -12,7 +12,7 @@ Try our experimental JupyterLite console with Kuzu!
 #| echo: false
 #| output: asis
 from urllib.parse import urlencode
-# base_url = "http://127.0.0.1:8000"
+#base_url = "http://127.0.0.1:8000"
 base_url = "https://kuzu-lab.netlify.app"
 
 lines = [
@@ -26,7 +26,7 @@ from IPython.display import display, HTML
 await micropip.install(["tzdata","pyvis","kuzu_wasm"])
 import kuzu_wasm
 from kuzu_wasm.utils import *""",
-"""kuzu = await kuzu_wasm.init("https://kuzu-lab.netlify.app/package/dist/kuzu.js")
+"""kuzu = await kuzu_wasm.init()
 db = await kuzu.Database()
 conn = await kuzu.Connection(db)""",
 """# get remote csv to wasm filesystem
@@ -43,7 +43,8 @@ await conn.execute("CREATE REL TABLE LivesIn(FROM User TO City)")
 await conn.execute('COPY User FROM "/user.csv";')
 await conn.execute('COPY City FROM "/city.csv";')
 await conn.execute('COPY Follows FROM "/follows.csv";')
-await conn.execute('COPY LivesIn FROM "/lives_in.csv";')
+await conn.execute('COPY LivesIn FROM "/lives_in.csv";')""",
+"""#cypher query
 res = await conn.execute("MATCH (a:User)-[f:Follows]->(b:User)RETURN a.name, b.name, f.since")
 df = toDf(res)
 df""",
@@ -68,7 +69,7 @@ params.extend(("code", line) for line in lines if line)
 query = urlencode(params)
 
 jupyterlite = f"{base_url}/repl/?{query}"
-iframe = f'<iframe src="{jupyterlite}" style="width:1000px;height:600px;"></iframe>'
+iframe = f'<iframe src="{jupyterlite}" style="width:1000px;height:1000px;"></iframe>'
 print(iframe)
 ```
 
