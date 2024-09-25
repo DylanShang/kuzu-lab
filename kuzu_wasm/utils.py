@@ -62,7 +62,7 @@ def toNetworkx(data,directed: bool = True) -> nx.MultiGraph | nx.MultiDiGraph:
     for node in nodes.values():
         _id = node["_ID"]
         node_id = node["_LABEL"] + "_" + str(_id["offset"])
-        node[node["_LABEL"]] = True
+        # node[node["_LABEL"]] = True
         nx_graph.add_node(node_id, **node)
 
     # Add rels

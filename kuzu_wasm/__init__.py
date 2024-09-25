@@ -1,4 +1,4 @@
-__version__ = "0.0.7"
+__version__ = "0.0.9"
 async def init(wasmUrl=None) -> object:
     import js
     if wasmUrl is None:
